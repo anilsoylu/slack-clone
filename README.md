@@ -23,6 +23,7 @@ Node version 20.x
     GITHUB_CLIENT_SECRET=
     GOOGLE_CLIENT_ID=
     GOOGLE_CLIENT_SECRET=
+    NEXT_PUBLIC_API_SECRET_TOKEN=
 
 ### Setup Prisma
 

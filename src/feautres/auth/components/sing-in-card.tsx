@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { useState, useTransition } from "react"
+import { useTransition } from "react"
 import { useSearchParams } from "next/navigation"
 import { useCustomToast } from "@/hooks/use-custom-toast"
 
@@ -39,8 +39,6 @@ interface Props {
 }
 
 export const SignInCard = ({ setState }: Props) => {
-  const [error, setError] = useState<string | undefined>("")
-  const [success, setSuccess] = useState<string | undefined>("")
   const [isPending, startTransition] = useTransition()
 
   const showToast = useCustomToast()
@@ -61,41 +59,32 @@ export const SignInCard = ({ setState }: Props) => {
     })
   }
 
-  function onSubmit(values: z.infer<typeof LoginSchema>) {
-    setError("")
-    setSuccess("")
-
+  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     startTransition(() => {
       LoginAction(values, callbackUrl)
         .then((response) => {
           if (response?.error) {
-            setError(response.error)
             showToast({
               title: "Giriş başarısız!",
               description: `Bir hata oluştu: ${response.error}`,
               variant: "destructive",
             })
-            setSuccess("")
           } else {
             form.reset()
-            setSuccess("Giriş başarılı!")
             showToast({
               title: "Giriş başarılı!",
               description: "Başarıyla giriş yaptınız, yönlendiriliyorsunuz...",
               variant: "success",
             })
-            setError("")
           }
         })
         .catch(() => {
-          setError("Beklenmedik bir hata oluştu!")
           showToast({
             title: "Giriş başarısız!",
             description:
               "Beklenmedik bir hata oluştu! Lütfen tekrar deneyiniz.",
             variant: "destructive",
           })
-          setSuccess("")
         })
     })
   }
@@ -109,8 +98,6 @@ export const SignInCard = ({ setState }: Props) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-5 px-0 pb-0">
-        {error && <p className="text-destructive">{error}</p>}
-        {success && <p className="text-emerald-500">{success}</p>}
         <Form {...form}>
           <form className="space-y-2.5" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
