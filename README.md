@@ -16,6 +16,14 @@ Node version 20.x
 
     DATABASE_URL=
 
+
+    Note: This project is open source. Users should set the AUTH_SECRET value using `pnpm dlx auth secret`, `bunx auth secret`, or `npx auth secret` commands.
+    AUTH_SECRET=
+    GITHUB_CLIENT_ID=
+    GITHUB_CLIENT_SECRET=
+    GOOGLE_CLIENT_ID=
+    GOOGLE_CLIENT_SECRET=
+
 ### Setup Prisma
 
     npx prisma generate
